@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Sentiment Predictor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 80px;
+        }
+
+        input,
+        select {
+            padding: 10px;
+            width: 60%;
+            margin-top: 10px;
+        }
+
+        input[type=submit] {
+            width: auto;
+        }
+
+        .result {
+            margin-top: 30px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2 class="dialog">Enter a statement to get sentiment prediction</h2>
+        <form method="post">
+            <input type="text" name="statement" placeholder="Type your sentence here" required><br>
+            <label>Sarcasm:</label>
+            <select name="sarcasm">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select><br><br>
+            <input class="submit-btn" type="submit" value="Predict">
+        </form>
+    </div>
+    <div class="result">
+
+        {% if sentiment %}
+        <div class="result">
+            <strong>Prediction:</strong> {{ sentiment }}<br>
+            <strong>Input:</strong> "{{ statement }}"
+        </div>
+        {% endif %}
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,9 @@
+flask
+tensorflow
+pyspark
+schedule
+pandas
+scikit-learn
+requests
+beautifulsoup4
+selenium

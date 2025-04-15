@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Opinion Analyzer</title>
+    <style>
+        :root {
+            --bg-dark: #0f0f0f;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --positive-bg: rgba(46, 213, 115, 0.15);
+            --negative-bg: rgba(255, 71, 87, 0.15);
+            --neutral-bg: rgba(255, 234, 167, 0.15);
+            --positive-text: #2ed573;
+            --negative-text: #ff4757;
+            --neutral-text: #ffeaa7;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            color: #ffffff;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: var(--card-bg);
+            padding: 40px 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        h2.dialog {
+            color: #ffffff;
+            margin-bottom: 30px;
+            font-size: 2rem;
+            font-weight: 500;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        input,
+        select {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #6c5ce7, #4a90e2);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            width: auto;
+            align-self: center;
+        }
+
+        .submit-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(108, 92, 231, 0.4);
+        }
+
+        .result-card {
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 12px;
+            animation: slideUp 0.5s ease;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .result-card.positive {
+            background: var(--positive-bg);
+            border: 1px solid var(--positive-text);
+        }
+
+        .result-card.negative {
+            background: var(--negative-bg);
+            border: 1px solid var(--negative-text);
+        }
+
+        .result-card.neutral {
+            background: var(--neutral-bg);
+            border: 1px solid var(--neutral-text);
+        }
+
+        .result-emoji {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            border-radius: 5px;
+        }
+
+        .result-content {
+            flex: 1;
+            text-align: left;
+        }
+
+        .result-text {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+
+        .positive .result-text {
+            color: var(--positive-text);
+        }
+
+        .negative .result-text {
+            color: var(--negative-text);
+        }
+
+        .neutral .result-text {
+            color: var(--neutral-text);
+        }
+
+        .result-input {
+            color: rgba(255, 255, 255, 0.8);
+            font-style: italic;
+        }
+select {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    padding: 12px;
+    border-radius: 8px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 12px;
+}
+
+select option {
+    background: #2d2d2d;
+    color: #ffffff;
+    padding: 10px;
+}
+
+.submit-btn {
+    background: linear-gradient(135deg, #6c5ce7, #4a90e2) !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+
+/* For hover states */
+select:hover {
+    border-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+select:focus {
+    box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.3) !important;
+}
+
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        footer {
+            margin-top: 40px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 20px;
+                padding: 30px 20px;
+            }
+
+            input,
+            select {
+                width: 100%;
+            }
+
+            .result-card {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2 class="dialog">Opinion Analysis</h2>
+        <form method="post">
+            <input type="text" name="statement" placeholder="Enter your text here..." required>
+            <select name="sarcasm">
+                <option value="0">No Sarcasm</option>
+                <option value="1">Contains Sarcasm</option>
+            </select>
+            <input class="submit-btn" type="submit" value="Analyze">
+        </form>
+
+        {% if sentiment %}
+        <div class="result-card {{ sentiment|lower }}">
+            {% if emoji_gif %}
+            <img src="{{ emoji_gif }}" class="result-emoji" alt="Sentiment emoji">
+            {% endif %}
+            <div class="result-content">
+                <div class="result-text">
+                    <strong>Prediction:</strong> {{ sentiment }}
+                </div>
+                <div class="result-input">
+                    "{{ statement }}"
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <footer>
+        Opinion Analysis  • v1.0 • Dark Mode
+    </footer>
+</body>
+
+</html>
